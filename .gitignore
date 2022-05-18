@@ -4,6 +4,7 @@ coverage
 coverage.json
 typechain
 images
+helper-hardhat-config.js
 
 #Hardhat files
 cache

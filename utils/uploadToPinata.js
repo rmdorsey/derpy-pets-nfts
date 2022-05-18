@@ -7,13 +7,15 @@ const pinataApiSecret = process.env.PINATA_API_SECRET || ""
 const pinata = pinataSDK(pinataApiKey, pinataApiSecret)
 
 async function storeImages(imagesFilePath) {
-    const fullImagesPath = path.resolve(imagesFilePath)
-    const files = fs.readdirSync(fullImagesPath)
-    let responses = []
+    const fullImagesPath = path.resolve(imagesFilePath);
+    const files = fs.readdirSync(fullImagesPath);
+    let responses = [];
+
     for (fileIndex in files) {
         const readableStreamForFile = fs.createReadStream(`${fullImagesPath}/${files[fileIndex]}`)
         try {
-            const response = await pinata.pinFileToIPFS(readableStreamForFile)
+            const response = await pinata.pinFileToIPFS(readableStreamForFile);
+            console.log(`upload ${fileIndex}`)
             responses.push(response)
         } catch (error) {
             console.log(error)

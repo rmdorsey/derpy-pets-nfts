@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.8;
+pragma solidity ^0.8.7;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -23,7 +23,7 @@ contract RandomIpfsNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
     // NFT Variables
     uint256 private i_mintFee;
     uint256 public s_tokenCounter;
-    uint256 internal constant NUMBER_OF_TOKENS_IN_COLLECTION = 100;
+    uint256 internal constant UNIQUE_GRAPHICS_IN_COLLECTION = 56;
     string[] internal s_derpeyPetTokenUris;
     bool private s_initialized;
 
@@ -40,7 +40,7 @@ contract RandomIpfsNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
         bytes32 gasLane, // keyHash
         uint256 mintFee,
         uint32 callbackGasLimit,
-        string[3] memory dogTokenUris
+        string[56] memory dogTokenUris
     ) VRFConsumerBaseV2(vrfCoordinatorV2) ERC721("Random IPFS NFT", "RIN") {
         i_vrfCoordinator = VRFCoordinatorV2Interface(vrfCoordinatorV2);
         i_gasLane = gasLane;
@@ -50,7 +50,7 @@ contract RandomIpfsNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
         _initializeContract(dogTokenUris);
     }
 
-    function _initializeContract(string[3] memory dogTokenUris) private {
+    function _initializeContract(string[56] memory dogTokenUris) private {
         if (s_initialized) {
             revert AlreadyInitialized();
         }
@@ -81,7 +81,7 @@ contract RandomIpfsNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
         address derpeyPetTokenOwner = s_requestIdToSender[requestId];
         uint256 newItemId = s_tokenCounter;
         s_tokenCounter = s_tokenCounter + 1;
-        uint256 rando = randomWords[0] % NUMBER_OF_TOKENS_IN_COLLECTION;
+        uint256 rando = randomWords[0] % UNIQUE_GRAPHICS_IN_COLLECTION;
         _safeMint(derpeyPetTokenOwner, newItemId);
         _setTokenURI(newItemId, s_derpeyPetTokenUris[rando]);
         emit NftMinted(rando, derpeyPetTokenOwner);
